@@ -1,0 +1,5 @@
+src/**/*.exe
+*.sublime-workspace
+bin/
+pkg/
+.vagrant/

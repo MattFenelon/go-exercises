@@ -1,0 +1,23 @@
+{
+	"folders":
+	[
+		{
+			"follow_symlinks": true,
+			"path": ".",
+			"folder_exclude_patterns": ["bin", "pkg", ".vagrant"],
+		}
+	],
+	"settings":
+	{
+		"GoSublime":
+		{
+			"autocomplete_builtins": true,
+			"autocomplete_closures": true,
+			"autocomplete_live_hint": true,
+			"env":
+			{
+				"GOPATH": "$GS_GOPATH"
+			}
+		}
+	}
+}
