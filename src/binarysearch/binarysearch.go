@@ -40,10 +40,10 @@ func RecursiveBinarySearch(a []int, n int) int {
 
 	if val > n {
 		return RecursiveBinarySearch(a[:mid], n)
-	} else if val < n && mid+1 < len(a) {
-		r := RecursiveBinarySearch(a[mid+1:], n)
+	} else if low := mid + 1; val < n && low < len(a) {
+		r := RecursiveBinarySearch(a[low:], n)
 		if r != -1 {
-			return mid + 1 + r
+			return low + r
 		}
 	} else if n == val {
 		return mid
