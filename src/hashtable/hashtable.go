@@ -42,10 +42,14 @@ func (ht HashTable) containsHash(i int) bool {
 	return i < len(ht.values)
 }
 
+// Returns the hash for the specified string
+// as an int.
+// The has function used is djb2 from:
+// http://scientopia.org/blogs/goodmath/2013/10/20/basic-data-structures-hash-tables/
 func getIntHash(s string) int {
-	hash := 0
+	hash := 5381
 	for _, i := range s {
-		hash = (31*hash + int(i)) % 10
+		hash = (33*hash + int(i)) % 10
 	}
 
 	return hash
