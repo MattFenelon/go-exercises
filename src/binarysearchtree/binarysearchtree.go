@@ -52,7 +52,8 @@ func findNodeForKey(current *BinarySearchTreeNode, key string) *BinarySearchTree
 		return current
 	}
 
-	if key > current.key {
+	traverseRightSide := key > current.key
+	if traverseRightSide {
 		if current.rightNode == nil {
 			current.rightNode = &BinarySearchTreeNode{key: key}
 			return current.rightNode
@@ -61,14 +62,10 @@ func findNodeForKey(current *BinarySearchTreeNode, key string) *BinarySearchTree
 		return findNodeForKey(current.rightNode, key)
 	}
 
-	if key < current.key {
-		if current.leftNode == nil {
-			current.leftNode = &BinarySearchTreeNode{key: key}
-			return current.leftNode
-		}
-
-		return findNodeForKey(current.leftNode, key)
+	if current.leftNode == nil {
+		current.leftNode = &BinarySearchTreeNode{key: key}
+		return current.leftNode
 	}
 
-	return nil
+	return findNodeForKey(current.leftNode, key)
 }
