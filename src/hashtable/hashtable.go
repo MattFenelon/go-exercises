@@ -30,8 +30,12 @@ func (ht HashTable) Get(key string) interface{} {
 func (ht *HashTable) Set(key string, value interface{}) {
 	i := getIntHash(key)
 
-	if lastIndex := len(ht.values) - 1; i > lastIndex {
-		newTail := make([]interface{}, i-lastIndex)
+	lastIndex := len(ht.values) - 1
+	if lastIndex < 0 {
+		lastIndex = 0
+	}
+	if i > lastIndex {
+		newTail := make([]interface{}, (i-lastIndex)+1)
 		ht.values = append(ht.values, newTail...)
 	}
 
