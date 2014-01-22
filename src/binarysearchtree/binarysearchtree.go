@@ -1,71 +1,90 @@
 package binarysearchtree
 
+// A BinarySearchTree represents a collection of key-value-pairs
+// stored in a tree structure.
+// Child nodes to the left have keys less than the parent node and
+// child nodes to the right have keys greater than the parent node.
+// Getting and setting a key takes O(log n) time, however worst-case
+// performance can be O(n) if the tree is severely unbalanced.
 type BinarySearchTree struct {
-	rootNode *BinarySearchTreeNode
-}
-
-type BinarySearchTreeNode struct {
-	key       string
-	value     interface{}
-	leftNode  *BinarySearchTreeNode
-	rightNode *BinarySearchTreeNode
+	rootNode *node
 }
 
 func NewBinarySearchTree() *BinarySearchTree {
-	return &BinarySearchTree{
-		rootNode: nil,
-	}
+	return &BinarySearchTree{}
 }
 
+// Get traverses the BST to find the value for the
+// specified key. Nil is returned if the key does not
+// exist.
 func (bst *BinarySearchTree) Get(key string) interface{} {
-	return findValueForKey(bst.rootNode, key)
+	return bst.rootNode.Get(key)
 }
 
+// Set stores the value against the key specified.
+// If the key is already in use the value is overwritten with
+// the value specified here.
 func (bst *BinarySearchTree) Set(key string, value interface{}) {
 	if bst.rootNode == nil {
-		bst.rootNode = &BinarySearchTreeNode{key: key, value: value}
+		bst.rootNode = newNode(key, value)
 		return
 	}
 
-	n := findNodeForKey(bst.rootNode, key)
-	n.value = value
+	bst.rootNode.Set(key, value)
 }
 
-func findValueForKey(current *BinarySearchTreeNode, key string) interface{} {
-	if current == nil {
+// node represents a node in the BST.
+// A node can have between 0 and 2 child nodes, where the key of
+// the left node is less than the parent key, and the key of the
+// right node is greater than the parent key.
+type node struct {
+	key       string
+	value     interface{}
+	leftNode  *node
+	rightNode *node
+}
+
+func newNode(key string, value interface{}) *node {
+	return &node{key: key, value: value}
+}
+
+func (n *node) Get(key string) interface{} {
+	if n == nil {
 		return nil
 	}
 
-	if current.key == key {
-		return current.value
+	if n.key == key {
+		return n.value
 	}
 
-	if key > current.key {
-		return findValueForKey(current.rightNode, key)
+	if key > n.key {
+		return n.rightNode.Get(key)
 	}
 
-	return findValueForKey(current.leftNode, key)
+	return n.leftNode.Get(key)
 }
 
-func findNodeForKey(current *BinarySearchTreeNode, key string) *BinarySearchTreeNode {
-	if key == current.key {
-		return current
+func (n *node) Set(key string, value interface{}) {
+	if n.key == key {
+		n.key, n.value = key, value
+		return
 	}
 
-	traverseRightSide := key > current.key
+	traverseRightSide := key > n.key
 	if traverseRightSide {
-		if current.rightNode == nil {
-			current.rightNode = &BinarySearchTreeNode{key: key}
-			return current.rightNode
+		if n.rightNode == nil {
+			n.rightNode = newNode(key, value)
+			return
 		}
 
-		return findNodeForKey(current.rightNode, key)
+		n.rightNode.Set(key, value)
+		return
 	}
 
-	if current.leftNode == nil {
-		current.leftNode = &BinarySearchTreeNode{key: key}
-		return current.leftNode
+	if n.leftNode == nil {
+		n.leftNode = newNode(key, value)
+		return
 	}
 
-	return findNodeForKey(current.leftNode, key)
+	n.leftNode.Set(key, value)
 }
