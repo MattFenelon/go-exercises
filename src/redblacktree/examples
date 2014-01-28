@@ -1,0 +1,214 @@
+add a:
+
+                j (b)
+          /             \
+         e (b)           o (b)
+      /     \          /     \
+     b (r)   g (r)    l (r)   r (r)
+    /
+   a (r)
+
+becomes:
+                j (b)
+          /             \
+         e (r)           o (b)
+      /     \          /     \
+     b (b)   g (b)    l (r)   v (r)
+    /
+   a (r)
+
+---
+
+j, o, e, c:
+
+                j (b)
+          /             \
+         e (b)           o (b)
+        /                 
+       c (r)              
+        \
+         
+      
+add d (left rotation):
+
+                j (b)
+          /             \
+         e (b)           o (b)
+        /                 
+       d (r)              
+     /   \
+    c (r)
+
+right rotation:
+
+                j (b)
+            /          \
+           d (b)        o (b)
+        /    \              
+       c (r)  e (r)
+
+
+---
+
+           a (b)
+         /    \
+      nil (b)  c (r)
+                \
+                 e (r)
+
+becomes:
+
+           c (b)
+         /    \
+        a (r)  e (r)
+
+---
+
+add c:
+
+           a (b)
+         /    \
+       (b)     e (r)
+              /
+             c (r)
+
+becomes:
+
+           c (b)
+         /    \
+        a (r)  e (r)
+
+---
+
+add h:
+
+           c (b)
+         /    \
+        a (b)  e (b)
+                \
+                 h (r)
+
+add l:
+
+           c (b)
+         /    \
+        a (b)  e (b)
+                \
+                 h (r)
+                  \
+                   l (r)
+
+becomes:
+
+           c (b)
+         /    \
+        a (b)  h (b)
+             /   \
+            e (r) l (r)
+
+add m, p:
+
+           c (b)
+         /    \
+        a (b)  h (r)
+             /   \
+            e (b) l (b)
+                   \
+                    m (r)
+                     \
+                      p (r)
+
+becomes:
+
+           c (b)g
+         /    \
+        a (b)  h (r)
+             /   \
+            e (b) m (b)
+                /   \
+              l (r)  p (r)
+
+---
+
+add c:
+
+            j (b)
+          /    \
+         e (r)  nil (b)
+        /
+       c (r)
+
+becomes:
+
+            e (b)
+          /    \
+         c (r)  j (r)
+
+add d (colour flip):
+
+           e (b)
+          /    \
+         c (b)  j (b)
+          \
+           d (r)
+
+---
+
+add c:
+
+            e (b)
+          /    \
+         a (r)  nil (b)
+          \
+           c (r)
+
+becomes (left rotate on p, then right rotate on g):
+
+            c (b)
+          /    \
+         a (r)  e (r)
+
+---
+
+           j (b) g
+         /    \
+      nil (b)  m (r) p
+              /
+             l (r) n
+
+becomes:
+
+           l (b)
+         /    \
+      j (r)    m (r)
+                
+---
+
+add r:
+
+           m (b)
+         /    \
+      j (b)    q (b)
+              / \
+            (b)  t (r)
+                /
+               r (r) 
+
+becomes:
+
+           m (b)
+         /    \
+      j (b)    r (b)
+             /   \
+           q (r)  t (r)
+                
+
+---
+
+add a:
+
+           h (b)
+         /    \
+        c (b)  l (b)
+       /  \
+     a (r) e (r)        
