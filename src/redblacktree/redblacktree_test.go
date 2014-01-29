@@ -374,7 +374,7 @@ func Test_when_a_node_is_added_to_a_red_parent_and_its_uncle_is_red_and_its_gran
 	}
 }
 
-func Test_when_a_new_node_is_added_to_a_red_parent_with_no_uncle_and_its_grandparent_is_root(t *testing.T) {
+func Test_when_a_node_is_added_to_a_red_parent_with_no_uncle_and_its_grandparent_is_root(t *testing.T) {
 	t.Log("And the key is greater than root and its parent")
 	actualRbt := NewRedBlackTree()
 	actualRbt.Set("a", "a")
@@ -476,7 +476,7 @@ func Test_when_a_new_node_is_added_to_a_red_parent_with_no_uncle_and_its_grandpa
 	}
 }
 
-func Test_when_a_new_node_is_added_to_a_red_parent_with_no_uncle_and_its_grandparent_is_not_root(t *testing.T) {
+func Test_when_a_node_is_added_to_a_red_parent_with_no_uncle_and_its_grandparent_is_not_root(t *testing.T) {
 	t.Log("And the key is greater than root, its grandparent, and its parent")
 	actualRbt := NewRedBlackTree()
 	actualRbt.Set("a", "a")
@@ -718,6 +718,51 @@ func Test_when_a_node_is_added_to_a_red_parent_and_its_uncle_is_black_and_its_gr
 	t.Skip()
 }
 
+func Test_when_a_node_is_added_to_a_black_parent_with_a_black_uncle(t *testing.T) {
+	t.Log("And the key is greater than root, its grandparent, and its parent")
+	actualRbt := NewRedBlackTree()
+	actualRbt.Set("a", "a")
+	actualRbt.Set("c", "c")
+	actualRbt.Set("e", "e")
+	actualRbt.Set("h", "h")
+	actualRbt.Set("l", "l")
+	actualRbt.Set("d", "d")
+	actualRbt.Set("f", "f")
+
+	expectedRbt := &RedBlackTree{
+		root: &RedBlackTreeNode{
+			key:    "c",
+			value:  "c",
+			colour: black,
+			left: &RedBlackTreeNode{
+				key: "a", value: "a", colour: black,
+			},
+			right: &RedBlackTreeNode{
+				key: "h", value: "h", colour: red,
+				left: &RedBlackTreeNode{
+					key: "e", value: "e", colour: black,
+					left:  &RedBlackTreeNode{key: "d", value: "d", colour: red},
+					right: &RedBlackTreeNode{key: "f", value: "f", colour: red},
+				},
+				right: &RedBlackTreeNode{key: "l", value: "l", colour: black},
+			},
+		},
+	}
+
+	t.Log("It should add the node as a red child of the parent")
+	if reflect.DeepEqual(expectedRbt, actualRbt) == false {
+		t.Errorf("\tExpected %v but was %v", expectedRbt, actualRbt)
+	}
+}
+
+func Test_when_a_node_is_added_to_a_black_parent_with_no_uncle(t *testing.T) {
+	t.Skip()
+}
+
+func Test_when_a_node_is_added_to_a_black_parent_with_a_red_uncle(t *testing.T) {
+	t.Skip()
+}
+
 type RedBlackTree struct {
 	root *RedBlackTreeNode
 }
@@ -790,7 +835,7 @@ func rebalanceNode(n, parent, grandparent *RedBlackTreeNode) {
 		uncle = grandparent.right
 	}
 
-	if uncle == nil && parent.colour == red && n == parent.right && parent == grandparent.right {
+	if uncle == nil && n == parent.right && parent == grandparent.right {
 		parent.colour = black
 		grandparent.colour = red
 
@@ -801,7 +846,7 @@ func rebalanceNode(n, parent, grandparent *RedBlackTreeNode) {
 		grandparent.left = &saved
 	}
 
-	if uncle == nil && parent.colour == red && n == parent.left && parent == grandparent.left {
+	if uncle == nil && n == parent.left && parent == grandparent.left {
 		parent.colour = black
 		grandparent.colour = red
 
@@ -812,7 +857,7 @@ func rebalanceNode(n, parent, grandparent *RedBlackTreeNode) {
 		grandparent.right = &saved
 	}
 
-	if uncle == nil && parent.colour == red && n == parent.right && parent == grandparent.left {
+	if uncle == nil && n == parent.right && parent == grandparent.left {
 		// left rotate on parent
 		parent.right = nil
 		n.left = parent
@@ -820,7 +865,7 @@ func rebalanceNode(n, parent, grandparent *RedBlackTreeNode) {
 		rebalanceNode(n.left, n, grandparent) // could just be rotate-right
 	}
 
-	if uncle == nil && parent.colour == red && n == parent.left && parent == grandparent.right {
+	if uncle == nil && n == parent.left && parent == grandparent.right {
 		// right rotate on parent
 		parent.left = nil
 		n.right = parent
@@ -828,7 +873,7 @@ func rebalanceNode(n, parent, grandparent *RedBlackTreeNode) {
 		rebalanceNode(n.right, n, grandparent) // could just be rotate-left
 	}
 
-	if uncle != nil && uncle.colour == red && parent.colour == red {
+	if uncle != nil && uncle.colour == red {
 		parent.colour = black
 		uncle.colour = black
 		grandparent.colour = red
